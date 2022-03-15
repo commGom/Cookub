@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-
 import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

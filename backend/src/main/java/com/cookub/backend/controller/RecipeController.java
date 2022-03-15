@@ -15,6 +15,8 @@ import com.cookub.backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/mypage")
@@ -23,54 +25,11 @@ public class RecipeController {
     @Autowired
     private RecipeService recipeService;
 
-    ///////////////////////등록//////////////////////////
-    // 레시피 정보 등록 (recipe)
+    /////////////////////// 등록//////////////////////////
+    // 레시피 정보 등록
     @RequestMapping(value = "/recipe/{userId}", method = RequestMethod.POST)
-    public void setRecipe(@RequestBody RecipeDto recipeDto,@PathVariable Long userId) {
-         recipeService.setRecipe(recipeDto, userId);
-    }
-
-    // 레시피 정보 등록 ( CookMethod )
-    @RequestMapping(value = "/cookMethod", method = RequestMethod.POST)
-    public CookMethod setRecipe(@RequestBody CookMethodDto cookmethodDto) {
-        return recipeService.setMethod(cookmethodDto);
-    }
-
-    // 레시피 정보 등록 ( Ingredient )
-    @RequestMapping(value = "/ingredient", method = RequestMethod.POST)
-    public Ingredient setIngredinet(@RequestBody IngredientDto ingredientDto) {
-        return recipeService.setIngredient(ingredientDto);
-    }
-
-    // 레시피 정보 등록 ( keyword )
-    @RequestMapping(value = "/keyword", method = RequestMethod.POST)
-    public Keyword setKeyword(@RequestBody KeywordDto keywordDto) {
-        return recipeService.setKeyword(keywordDto);
-    }
-
-    //////////////////////////////////////////수정///////////////////////////////
-    // 레시피 정보 수정 (recipe)
-    @PutMapping("/recipe")
-    public Recipe putRecipe(@RequestBody RecipeDto recipeDto) {
-        return recipeService.putRecipe(recipeDto);
-    }
-
-    // 레시피 정보 수정 ( CookMethod )
-    @PutMapping("/cookMethod")
-    public CookMethod putRecipe(@RequestBody CookMethodDto cookmethodDto) {
-        return recipeService.putMethod(cookmethodDto);
-    }
-
-    // 레시피 정보 수정 ( Ingredient )
-    @RequestMapping(value = "/ingredient", method = RequestMethod.PUT)
-    public Ingredient putIngredinet(@RequestBody IngredientDto ingredientDto) {
-        return recipeService.putIngredient(ingredientDto);
-    }
-
-    // 레시피 정보 수정 ( keyword )
-    @PutMapping( "/keyword")
-    public Keyword putKeyword(@RequestBody KeywordDto keywordDto) {
-        return recipeService.putKeyword(keywordDto);
+    public void setRecipe(@RequestBody RecipeDto recipeDto, @PathVariable Long userId) {
+        recipeService.setRecipe(recipeDto, userId);
     }
 
     // 내 레시피 목록 조회
@@ -79,16 +38,23 @@ public class RecipeController {
         return recipeService.myRecipe(userId);
     }
 
-    // // 내 레시피 삭제
-    // @DeleteMapping("/recipe/{recipeId}")
-    // public String recipeDelete(@PathVariable("recipeId") long recipeId) {
-    //     return recipeService.delRecipe(recipeId);
-    // }
-
-    // 내 레시피 상세 정보 조회
+    // 레시피 '상세' 정보 조회
     @GetMapping("/recipe/{recipeId}")
     public Recipe findRecipe(@PathVariable("recipeId") long recipeId) {
         return recipeService.findRecipe(recipeId);
+    }
+
+    // 레시피 정보 수정
+    @RequestMapping(value = "/recipe/{recipeId}", method = RequestMethod.PUT)
+    public String putRecipe(@RequestBody RecipeDto recipeDto, @PathVariable Long recipeId) {
+        recipeService.putRecipe(recipeDto, recipeId);
+        return "redirect:/";
+    }
+
+    // 내 레시피 삭제
+    @RequestMapping(value = "/recipe/{recipeId}", method = RequestMethod.DELETE)
+    public String recipeDelete(@RequestBody RecipeDto recipeDto, @PathVariable("recipeId") long recipeId) {
+        return recipeService.delRecipe(recipeId);
     }
 
 }
